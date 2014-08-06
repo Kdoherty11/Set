@@ -43,10 +43,10 @@ var Game = function() {
 		}
 	};
 
-	this.getPlayerById = function(id) {
+	this.getPlayerById = function(name) {
 		var playersLen = this.players.length;
 		for (var i = 0; i < playersLen; i++) {
-			if (this.players[i].id === id) {
+			if (this.players[i].name === name) {
 				return this.players[i];
 			}
 		}

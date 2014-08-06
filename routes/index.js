@@ -25,9 +25,9 @@ exports.addGame = function(req, res) {
 };
 
 exports.addPlayer = function(req, res) {
-	var playerId = req.body.playerId;
+	var playerName = req.body.name;
 	var gameIndex = req.param('number');
-	var player = new Player(playerId);
+	var player = new Player(playerName);
 	games.getGame(gameIndex).addPlayer(player);
 	res.json('OK');
 };
