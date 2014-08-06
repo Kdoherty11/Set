@@ -13,6 +13,12 @@ exports.getGame = function(req, res) {
 	res.json(games.getGame(gameIndex));
 };
 
+exports.cards = function(req, res) {
+	var gameIndex = req.param('number');
+	var game = games.getGame(gameIndex);
+	res.json(game.activeCards)
+}
+
 exports.addGame = function(req, res) {
 	games.addGame();
 	res.json('OK');

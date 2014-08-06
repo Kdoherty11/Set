@@ -30,6 +30,7 @@ if ('development' == app.get('env')) {
 
 app.get('/games', routes.games);
 app.get('/games/:number', routes.getGame);
+app.get('/games/:number/cards', routes.cards);
 
 app.post('/games/add', routes.addGame);
 app.post('/games/:number/addplayer', routes.addPlayer);
