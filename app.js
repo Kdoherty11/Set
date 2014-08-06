@@ -10,9 +10,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
-app.configure(function(){
-  app.use(express.bodyParser());
-});
+app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(function (req, res, next) {
 	res.set('X-Powered-By', 'Set  Game Server');
@@ -38,9 +36,16 @@ app.post('/games/:number/deal', routes.deal);
 app.post('/games/:number/remove', routes.remove);
 app.post('/games/:number/incrementscore', routes.incrementScore);
 
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+var server = http.createServer(app);
+ 
+server.listen(server_port, server_ip_address, function () {
+  console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
 });
+
+// http.createServer(app).listen(app.get('port'), function(){
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
 
