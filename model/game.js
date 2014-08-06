@@ -24,10 +24,8 @@ var Game = function() {
 	};
 
 	this.remove = function(card) {
-		console.log('Removing ' + JSON.stringify(card));
 		var activeLen = this.activeCards.length;
 		for (var i = 0; i < activeLen; i++) {
-			console.log('Comparing card to ' + JSON.stringify(this.activeCards[i]));
 			if (JSON.stringify(this.activeCards[i]) === JSON.stringify(card)) {
 				this.activeCards.splice(i, 1);
 				break;
