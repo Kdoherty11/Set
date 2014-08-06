@@ -46,12 +46,11 @@ var Game = function() {
 	this.getPlayerById = function(id) {
 		var playersLen = this.players.length;
 		for (var i = 0; i < playersLen; i++) {
-			if (this.players[i].getId() === id) {
+			if (this.players[i].id === id) {
 				return this.players[i];
 			}
 		}
 		throw new Error('Could not find player with id ' + id);
-
 	}
 }
 
