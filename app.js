@@ -13,7 +13,7 @@ app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(function (req, res, next) {
-	res.set('X-Powered-By', 'Set  Game Server');
+	res.set('X-Powered-By', 'Set Game Server');
 	next();
 });
 //app.use(app.router);
@@ -33,8 +33,11 @@ app.get('/games/:number/cards', routes.cards);
 app.post('/games/add', routes.addGame);
 app.post('/games/:number/addplayer', routes.addPlayer);
 app.post('/games/:number/deal', routes.deal);
-app.post('/games/:number/remove', routes.remove);
+app.post('/games/:number/remove', routes.removeCards);
+app.post('/games/:number/replace', routes.replaceCards);
 app.post('/games/:number/incrementscore', routes.incrementScore);
+
+app.delete('/games/:number', routes.delete);
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
@@ -44,8 +47,4 @@ var server = http.createServer(app);
 server.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
 });
-
-// http.createServer(app).listen(app.get('port'), function(){
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
 
