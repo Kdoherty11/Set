@@ -4,14 +4,19 @@ var Game = require('../model/game'),
 
 var games = new Games();
 
-exports.games = function(req, res) {
-	res.json(games);
-}
+exports.addGame = function(req, res) {
+	games.addGame();
+	res.json('OK');
+};
 
 exports.getGame = function(req, res) {
 	var gameIndex = req.param('number');
 	res.json(games.getGame(gameIndex));
 };
+
+exports.games = function(req, res) {
+	res.json(games);
+}
 
 exports.cards = function(req, res) {
 	var gameIndex = req.param('number');
@@ -19,17 +24,17 @@ exports.cards = function(req, res) {
 	res.json(game.activeCards)
 }
 
-exports.addGame = function(req, res) {
-	games.addGame();
-	res.json('OK');
-};
-
 exports.addPlayer = function(req, res) {
 	var playerName = req.body.name;
 	var gameIndex = req.param('number');
 	var player = new Player(playerName);
-	games.getGame(gameIndex).addPlayer(player);
-	res.json('OK');
+	var game = games.getGame(gameIndex);
+	if (game.players.length < 4) {
+		game.addPlayer(player);
+		res.json('OK');
+	} else {
+		res.json('Limit is 4 players')
+	}
 };
 
 exports.deal = function(req, res) {
@@ -39,13 +44,22 @@ exports.deal = function(req, res) {
 	res.json('OK');
 };
 
-exports.remove = function(req, res) {
-
+exports.removeCards = function(req, res) {
 	 var gameIndex = req.param('number');
 	 games.getGame(gameIndex).removeAll(req.body);
-
 	 res.json('OK');
 };
+
+exports.replaceCards = function(req, res) {
+	var gameIndex = req.param('number');
+	var numCards = req.body.length;
+	var game = games.getGame(gameIndex);
+	game.removeAll(req.body);
+	game.deal(numCards);
+
+	res.json('OK');
+}
+
 
 exports.incrementScore = function(req, res) {
 	var gameIndex = req.param('number');
@@ -58,4 +72,10 @@ exports.incrementScore = function(req, res) {
 
 	res.json('OK');
 };
+
+exports.delete = function(req, res) {
+	var gameIndex = req.param('number');
+	games.games.splice(gameIndex - 1, 1);
+	res.json('OK');
+}
 
