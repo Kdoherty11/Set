@@ -5,10 +5,6 @@ var Player = function(id) {
 	this.incrementScore = function() {
 		this.numSets++;
 	};
-
-	this.getId = function() {
-		return id;
-	};
 }
 
 module.exports = Player;
