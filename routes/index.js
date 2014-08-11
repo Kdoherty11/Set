@@ -1,6 +1,8 @@
 var Game = require('../model/game'),
 	Player = require('../model/player'),
-	Games = require('../model/games');
+	Games = require('../model/games'),
+	Set = require('../model/set'),
+	SetSolver = require('../model/setSolver');
 
 var games = new Games();
 
@@ -44,13 +46,19 @@ exports.deal = function(req, res) {
 	res.json('OK');
 };
 
-exports.removeAndDeal = function(req, res) {
-	var id = req.param('id');
+exports.handleSet = function(req, res) {
 	var numCards = req.body.length;
-	var game = games.getGame(id);
-	game.removeAll(req.body);
-	game.deal(numCards);
-	res.json('OK');
+	console.log(numCards);
+	console.log('is set ' + new Set(req.body[0], req.body[1], req.body[2]).isSet());
+	if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
+		var id = req.param('id');
+		var game = games.getGame(id);
+		game.removeAll(req.body);
+		game.deal(numCards);
+		res.json('Set!');
+	} else {
+		res.json('Not a set!');
+	}
 };
 
 exports.incrementScore = function(req, res) {
@@ -69,5 +77,17 @@ exports.delete = function(req, res) {
 	var id = req.param('id');
 	games.deleteGame(id);
 	res.json('OK');
+};
+
+exports.findSet = function(req, res) {
+	var id = req.param('id');
+	var game = games.getGame(id);
+	var setSolver = new SetSolver();
+	var set = setSolver.findSet(game.activeCards);
+	if (set === null) {
+		res.json('There are no sets!');
+	} else {
+		res.json(set);
+	}
 };
 

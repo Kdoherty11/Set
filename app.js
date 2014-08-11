@@ -29,11 +29,12 @@ if ('development' == app.get('env')) {
 app.get('/games', routes.games);
 app.get('/games/:id', routes.getGame);
 app.get('/games/:id/cards', routes.cards);
+app.get('/games/:id/findset', routes.findSet);
 
 app.post('/games', routes.addGame);
 app.post('/games/:id/addplayer', routes.addPlayer);
 app.post('/games/:id/deal', routes.deal);
-app.post('/games/:id/replace', routes.removeAndDeal);
+app.post('/games/:id/receiveset', routes.handleSet);
 app.post('/games/:id/incrementscore', routes.incrementScore);
 
 app.delete('/games/:id', routes.delete);
