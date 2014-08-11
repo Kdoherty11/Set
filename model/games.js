@@ -28,10 +28,6 @@ var Games = function() {
 			}
 		}
 	};
-
-	this.addPlayer = function(player, index) {
-		this.getGame(index).addPlayer(player);
-	};
 }
 
 module.exports = Games;

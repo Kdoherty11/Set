@@ -2,7 +2,8 @@ var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
 	Set = require('../model/set'),
-	SetSolver = require('../model/setSolver');
+	SetSolver = require('../model/setSolver'),
+	gcm = require('node-gcm');
 
 var games = new Games();
 
@@ -28,7 +29,8 @@ exports.cards = function(req, res) {
 
 exports.addPlayer = function(req, res) {
 	var playerName = req.body.name;
-	var player = new Player(playerName);
+	var playerRegId = req.body.regId;
+	var player = new Player(playerName, regId);
 	var id = req.param('id');
 	var game = games.getGame(id);
 	if (game.players.length < 4) {
@@ -55,6 +57,7 @@ exports.handleSet = function(req, res) {
 		var game = games.getGame(id);
 		game.removeAll(req.body);
 		game.deal(numCards);
+		var tickle = new gcm.Message();
 		res.json('Set!');
 	} else {
 		res.json('Not a set!');
@@ -65,8 +68,8 @@ exports.incrementScore = function(req, res) {
 	var id = req.param('id');
 	var game = games.getGame(id);
 
-	var playerId = req.body.playerId;
-	var player = game.getPlayerById(playerId);
+	var playerName = req.body.playerName;
+	var player = game.getPlayerByName(playerName);
 
 	player.incrementScore();
 

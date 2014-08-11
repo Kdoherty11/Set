@@ -1,5 +1,6 @@
 var Deck = require('./deck'),
-	SetSolver = require('./setSolver');
+	SetSolver = require('./setSolver'),
+	gcm = require('node-gcm');
 
 var NUM_START_CARDS = 12;
 
@@ -7,6 +8,7 @@ var Game = function(id) {
 
 	this.players = [];
 	this.activeCards = [];
+	this.registrationIds = [];
 	this.deck = new Deck();
 	this.id = id;
 
@@ -22,7 +24,8 @@ var Game = function(id) {
 	};
 
 	this.addPlayer = function(player) {
-		return this.players.push(player);
+		this.players.push(player);
+		this.registrationIds.push(player.regId);
 	};
 
 	this.remove = function(card) {
@@ -43,15 +46,27 @@ var Game = function(id) {
 		}
 	};
 
-	this.getPlayerById = function(name) {
+	this.getPlayerByName = function(name) {
 		var playersLen = this.players.length;
 		for (var i = 0; i < playersLen; i++) {
 			if (this.players[i].name === name) {
 				return this.players[i];
 			}
 		}
-		throw new Error('Could not find player with id ' + id);
-	}
+		throw new Error('Could not find player with name ' + name);
+	};
+
+	this.broadcastSendToSync = function() {
+		if (this.registrationIds.length === 0) {
+			throw new Error('No Ids are registered');
+		}
+		var message = new gcm.Message();
+		var sender = new gcm.Sender('AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE');
+
+		sender.send(message, this.registrationIds, 4, function (err, result) {
+    		console.log('result: ' + result);
+		});
+	};
 }
 
 module.exports = function (id) {
