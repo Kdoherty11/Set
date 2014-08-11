@@ -33,8 +33,7 @@ app.get('/games/:id/cards', routes.cards);
 app.post('/games', routes.addGame);
 app.post('/games/:id/addplayer', routes.addPlayer);
 app.post('/games/:id/deal', routes.deal);
-app.post('/games/:id/remove', routes.removeCards);
-app.post('/games/:id/replace', routes.replaceCards);
+app.post('/games/:id/replace', routes.removeAndDeal);
 app.post('/games/:id/incrementscore', routes.incrementScore);
 
 app.delete('/games/:id', routes.delete);

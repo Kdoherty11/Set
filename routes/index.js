@@ -44,13 +44,7 @@ exports.deal = function(req, res) {
 	res.json('OK');
 };
 
-exports.removeCards = function(req, res) {
-	 var id = req.param('id');
-	 games.getGame(id).removeAll(req.body);
-	 res.json('OK');
-};
-
-exports.replaceCards = function(req, res) {
+exports.removeAndDeal = function(req, res) {
 	var id = req.param('id');
 	var numCards = req.body.length;
 	var game = games.getGame(id);
