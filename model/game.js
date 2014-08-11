@@ -1,4 +1,5 @@
-var Deck = require('./deck');
+var Deck = require('./deck'),
+	SetSolver = require('./setSolver');
 
 var NUM_START_CARDS = 12;
 
@@ -16,8 +17,8 @@ var Game = function(id) {
 	};
 
 	this.isOver = function() {
-		// TODO: Check for sets in activeCards
-		return this.deck.cards < 3;
+		var solver = new SetSolver();
+		return this.deck.cards < 3 && solver.findSet(this.activeCards) === null;
 	};
 
 	this.addPlayer = function(player) {
