@@ -1,28 +1,37 @@
-var Game = require('../model/game');
+var Game = require('../model/game'),
+	shortId = require('shortid');
 
 var Games = function() {
 	this.games = [];
 
 	this.addGame = function() {
-		this.games.push(new Game());
+		var id = shortId.generate();
+		this.games.push(new Game(id));
+		return id;
 	};
 
-	this.getGame = function(index) {
-		// Allow URL to start at 1
-		var gameIndex = index - 1;
-
-		if (gameIndex < this.games.length) {
-			return this.games[gameIndex];
-		} else {
-			console.log('Index ' + gameIndex + 
-			' is out of bounds. Must be less than '
-			 + this.games.length);
+	this.getGame = function(id) {
+		var gamesLen = this.games.length;
+		for (var i = 0; i < gamesLen; i++) {
+			if (this.games[i].id === id) {
+				return this.games[i];
+			}
 		}
-	}
+	};
+
+	this.deleteGame = function(id) {
+		var gamesLen = this.games.length;
+		for (var i = 0; i < gamesLen; i++) {
+			if (this.games[i].id === id) {
+				this.games.splice(i, 1);
+				break;
+			}
+		}
+	};
 
 	this.addPlayer = function(player, index) {
 		this.getGame(index).addPlayer(player);
-	}
+	};
 }
 
 module.exports = Games;

@@ -5,30 +5,30 @@ var Game = require('../model/game'),
 var games = new Games();
 
 exports.addGame = function(req, res) {
-	games.addGame();
-	res.json('OK');
+	var id = games.addGame();
+	res.json(id);
 };
 
 exports.getGame = function(req, res) {
-	var gameIndex = req.param('number');
-	res.json(games.getGame(gameIndex));
+	var id = req.param('id');
+	res.json(games.getGame(id));
 };
 
 exports.games = function(req, res) {
 	res.json(games);
-}
+};
 
 exports.cards = function(req, res) {
-	var gameIndex = req.param('number');
-	var game = games.getGame(gameIndex);
+	var id = req.param('id');
+	var game = games.getGame(id);
 	res.json(game.activeCards)
-}
+};
 
 exports.addPlayer = function(req, res) {
 	var playerName = req.body.name;
-	var gameIndex = req.param('number');
 	var player = new Player(playerName);
-	var game = games.getGame(gameIndex);
+	var id = req.param('id');
+	var game = games.getGame(id);
 	if (game.players.length < 4) {
 		game.addPlayer(player);
 		res.json('OK');
@@ -39,31 +39,29 @@ exports.addPlayer = function(req, res) {
 
 exports.deal = function(req, res) {
 	var numCards = req.body.numCards;
-	var gameIndex = req.param('number');
-	games.getGame(gameIndex).deal(numCards);
+	var id = req.param('id');
+	games.getGame(id).deal(numCards);
 	res.json('OK');
 };
 
 exports.removeCards = function(req, res) {
-	 var gameIndex = req.param('number');
-	 games.getGame(gameIndex).removeAll(req.body);
+	 var id = req.param('id');
+	 games.getGame(id).removeAll(req.body);
 	 res.json('OK');
 };
 
 exports.replaceCards = function(req, res) {
-	var gameIndex = req.param('number');
+	var id = req.param('id');
 	var numCards = req.body.length;
-	var game = games.getGame(gameIndex);
+	var game = games.getGame(id);
 	game.removeAll(req.body);
 	game.deal(numCards);
-
 	res.json('OK');
-}
-
+};
 
 exports.incrementScore = function(req, res) {
-	var gameIndex = req.param('number');
-	var game = games.getGame(gameIndex);
+	var id = req.param('id');
+	var game = games.getGame(id);
 
 	var playerId = req.body.playerId;
 	var player = game.getPlayerById(playerId);
@@ -74,8 +72,8 @@ exports.incrementScore = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-	var gameIndex = req.param('number');
-	games.games.splice(gameIndex - 1, 1);
+	var id = req.param('id');
+	games.deleteGame(id);
 	res.json('OK');
-}
+};
 

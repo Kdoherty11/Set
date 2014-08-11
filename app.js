@@ -27,17 +27,17 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/games', routes.games);
-app.get('/games/:number', routes.getGame);
-app.get('/games/:number/cards', routes.cards);
+app.get('/games/:id', routes.getGame);
+app.get('/games/:id/cards', routes.cards);
 
-app.post('/games/add', routes.addGame);
-app.post('/games/:number/addplayer', routes.addPlayer);
-app.post('/games/:number/deal', routes.deal);
-app.post('/games/:number/remove', routes.removeCards);
-app.post('/games/:number/replace', routes.replaceCards);
-app.post('/games/:number/incrementscore', routes.incrementScore);
+app.post('/games', routes.addGame);
+app.post('/games/:id/addplayer', routes.addPlayer);
+app.post('/games/:id/deal', routes.deal);
+app.post('/games/:id/remove', routes.removeCards);
+app.post('/games/:id/replace', routes.replaceCards);
+app.post('/games/:id/incrementscore', routes.incrementScore);
 
-app.delete('/games/:number', routes.delete);
+app.delete('/games/:id', routes.delete);
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'

@@ -2,7 +2,8 @@
   "name": "Set",
   "version": "1.0.0",
   "dependencies": {
-    "express": "~3.15.2"
+    "express": "~3.15.2",
+    "shortid": "~2.0.1"
   },
   "description": "Restful API used to run PvP Set",
   "main": "app.js",

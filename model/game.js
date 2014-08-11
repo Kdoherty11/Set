@@ -2,11 +2,12 @@ var Deck = require('./deck');
 
 var NUM_START_CARDS = 12;
 
-var Game = function() {
+var Game = function(id) {
 
 	this.players = [];
 	this.activeCards = [];
 	this.deck = new Deck();
+	this.id = id;
 
 	this.deal = function(num) {
 		var dealt = this.deck.deal(num);
@@ -52,8 +53,8 @@ var Game = function() {
 	}
 }
 
-module.exports = function () {
-	var instance = new Game();
+module.exports = function (id) {
+	var instance = new Game(id);
 
 	instance.deal(NUM_START_CARDS);
 
