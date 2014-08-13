@@ -29,6 +29,7 @@ var Game = function(id) {
 	};
 
 	this.remove = function(card) {
+		console.log('Remove called on ' + JSON.stringify(card));
 		var activeLen = this.activeCards.length;
 		for (var i = 0; i < activeLen; i++) {
 			if (JSON.stringify(this.activeCards[i]) === JSON.stringify(card)) {
@@ -40,8 +41,11 @@ var Game = function(id) {
 
 	// Removes all cards in the input argument from the active cards
 	this.removeAll = function(cards) {
+		console.log('Remove all called on ' + JSON.stringify(cards));
 		var cardsLen = cards.length;
+		console.log('CardsLen: ' + cardsLen);
 		for (var i = 0; i < cardsLen; i++) {
+			console.log('Removing ' + JSON.stringify(cards[i]));
 			this.remove(cards[i]);
 		}
 	};

@@ -52,12 +52,14 @@ exports.handleSet = function(req, res) {
 	var numCards = req.body.length;
 	console.log('In handleSet');
 	console.log('req.body: ' + req.body);
-	console.log(numCards);
+	console.log('req body str: ' + JSON.stringify(req.body));
+	console.log('Num cards: ' + numCards);
 	console.log('is set ' + new Set(req.body[0], req.body[1], req.body[2]).isSet());
 	if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
 		var id = req.param('id');
 		var game = games.getGame(id);
 		console.log('Before removeAll');
+		console.log('body: ' + JSON.stringify(req.body));
 		game.removeAll(req.body);
 		console.log('After removeAll');
 		game.deal(numCards);
