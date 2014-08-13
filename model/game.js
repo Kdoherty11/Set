@@ -61,21 +61,21 @@ var Game = function(id) {
 		throw new Error('Could not find player with name ' + name);
 	};
 
-	this.broadcastSendToSync = function() {
-		if (this.registrationIds.length === 0) {
-			throw new Error('No Ids are registered');
-		}
-		var apiKey = 'AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE';
-		var sender = new gcm.Sender(apiKey);
-		var message = new gcm.Message();
+	// this.broadcastSendToSync = function() {
+	// 	if (this.registrationIds.length === 0) {
+	// 		throw new Error('No Ids are registered');
+	// 	}
+	// 	var apiKey = 'AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE';
+	// 	var sender = new gcm.Sender(apiKey);
+	// 	var message = new gcm.Message();
 		
 
-		console.log('Sending tickle');
-		sender.send(message, this.registrationIds, 4, function (err, result) {
-    		console.log('result: ' + result);
-    		console.log('result: ' + JSON.stringify(result));
-		});
-	};
+	// 	console.log('Sending tickle');
+	// 	sender.send(message, this.registrationIds, 4, function (err, result) {
+ //    		console.log('result: ' + result);
+ //    		console.log('result: ' + JSON.stringify(result));
+	// 	});
+	// };
 }
 
 module.exports = function (id) {

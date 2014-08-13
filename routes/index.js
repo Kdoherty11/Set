@@ -55,7 +55,7 @@ exports.handleSet = function(req, res) {
 		var game = games.getGame(id);
 		game.removeAll(req.body);
 		game.deal(numCards);
-		game.broadcastSendToSync();
+		//game.broadcastSendToSync();
 		res.json('Set!');
 	} else {
 		res.json('Not a set!');
