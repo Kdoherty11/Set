@@ -43,8 +43,10 @@ var Game = function(id) {
 
 	// Removes all cards in the input argument from the active cards
 	this.removeAll = function(cards) {
+		console.log('in removeAll trying to remove: ' + JSON.stringify(cards));
 		var cardsLen = cards.length;
 		for (var i = 0; i < cardsLen; i++) {
+			console.log('Passing ' + cards[i] + ' to remove')
 			this.remove(cards[i]);
 		}
 	};

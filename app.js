@@ -36,6 +36,8 @@ app.post('/games/:id/addplayer', routes.addPlayer);
 app.post('/games/:id/deal', routes.deal);
 app.post('/games/:id/receiveset', routes.handleSet);
 app.post('/games/:id/incrementscore', routes.incrementScore);
+app.post('/games/:id/remove', routes.remove);
+app.post('/games/:id/removeall', routes.removeAll);
 
 app.delete('/games/:id', routes.delete);
 

@@ -74,6 +74,24 @@ exports.incrementScore = function(req, res) {
 	res.json('OK');
 };
 
+exports.remove = function(req, res) {
+	console.log('In remove route');
+	var id =req.param('id');
+	var game = games.getGame(id);
+	console.log('Attempting to remove ' + JSON.stringify(req.body));
+	game.remove(req.body);
+	res.json('OK');
+};
+
+exports.removeAll = function(req, res) {
+	console.log('In removeAll route');
+	var id =req.param('id');
+	var game = games.getGame(id);
+	console.log('Attempting to remove ' + JSON.stringify(req.body));
+	game.removeAll(req.body);
+	res.json('OK');
+};
+
 exports.delete = function(req, res) {
 	var id = req.param('id');
 	games.deleteGame(id);
