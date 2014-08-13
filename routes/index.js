@@ -30,7 +30,7 @@ exports.cards = function(req, res) {
 exports.addPlayer = function(req, res) {
 	var playerName = req.body.name;
 	var playerRegId = req.body.regId;
-	var player = new Player(playerName, regId);
+	var player = new Player(playerName, playerRegId);
 	var id = req.param('id');
 	var game = games.getGame(id);
 	if (game.players.length < 4) {
