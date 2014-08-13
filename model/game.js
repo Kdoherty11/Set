@@ -32,17 +32,18 @@ var Game = function(id) {
 	this.remove = function(card) {
 		var activeLen = this.activeCards.length;
 		for (var i = 0; i < activeLen; i++) {
-			if (JSON.stringify(this.activeCards[i]) === JSON.stringify(card)) {
+			if (this.activeCards[i].equals(card)) {
+				console.log('Remove Works!');
 				this.activeCards.splice(i, 1);
-				break;
+				return;
 			}
 		}
+		throw new Error('Cound not remove ' + JSON.stringify(card));
 	};
 
 	// Removes all cards in the input argument from the active cards
 	this.removeAll = function(cards) {
 		var cardsLen = cards.length;
-		console.log('CardsLen: ' + cardsLen);
 		for (var i = 0; i < cardsLen; i++) {
 			this.remove(cards[i]);
 		}
@@ -59,12 +60,13 @@ var Game = function(id) {
 	};
 
 	this.broadcastSendToSync = function() {
-		console.log('In broadcastSendToSync');
 		if (this.registrationIds.length === 0) {
 			throw new Error('No Ids are registered');
 		}
+		var apiKey = 'AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE';
+		var sender = new gcm.Sender(apiKey);
 		var message = new gcm.Message();
-		var sender = new gcm.Sender('AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE');
+		
 
 		console.log('Sending tickle');
 		sender.send(message, this.registrationIds, 4, function (err, result) {
