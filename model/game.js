@@ -26,10 +26,10 @@ var Game = function(id) {
 	this.addPlayer = function(player) {
 		this.players.push(player);
 		this.registrationIds.push(player.regId);
+		console.log('RegIds: ' + this.registrationIds);
 	};
 
 	this.remove = function(card) {
-		console.log('Remove called on ' + JSON.stringify(card));
 		var activeLen = this.activeCards.length;
 		for (var i = 0; i < activeLen; i++) {
 			if (JSON.stringify(this.activeCards[i]) === JSON.stringify(card)) {
@@ -41,11 +41,9 @@ var Game = function(id) {
 
 	// Removes all cards in the input argument from the active cards
 	this.removeAll = function(cards) {
-		console.log('Remove all called on ' + JSON.stringify(cards));
 		var cardsLen = cards.length;
 		console.log('CardsLen: ' + cardsLen);
 		for (var i = 0; i < cardsLen; i++) {
-			console.log('Removing ' + JSON.stringify(cards[i]));
 			this.remove(cards[i]);
 		}
 	};
@@ -61,12 +59,14 @@ var Game = function(id) {
 	};
 
 	this.broadcastSendToSync = function() {
+		console.log('In broadcastSendToSync');
 		if (this.registrationIds.length === 0) {
 			throw new Error('No Ids are registered');
 		}
 		var message = new gcm.Message();
 		var sender = new gcm.Sender('AIzaSyB7cSXPyISGfV9VeDr_T7isoa8SnJSh6XE');
 
+		console.log('Sending tickle');
 		sender.send(message, this.registrationIds, 4, function (err, result) {
     		console.log('result: ' + result);
 		});
