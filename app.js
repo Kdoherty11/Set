@@ -42,7 +42,7 @@ app.post('/games/:id/removeall', routes.removeAll);
 
 app.delete('/games/:id', routes.delete);
 
-var server_port = 8000;
+var server_port = 8080;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
  
 var server = app.listen(server_port, server_ip_address, function () {
