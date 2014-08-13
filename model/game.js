@@ -69,6 +69,7 @@ var Game = function(id) {
 		console.log('Sending tickle');
 		sender.send(message, this.registrationIds, 4, function (err, result) {
     		console.log('result: ' + result);
+    		console.log('result: ' + JSON.stringify(result));
 		});
 	};
 }
