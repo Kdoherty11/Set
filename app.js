@@ -1,7 +1,7 @@
 var express = require('express')
   , app = express()
   , routes = require('./routes')
-  , server = require('http').createServer(app).listen(8000)
+  , server = require('http').createServer(app).listen(8080)
   , io = require('socket.io').listen(server)
   , path = require('path');
 
