@@ -9,11 +9,9 @@ var express = require('express')
 
 var app = express();
 
-var server_ip_address = process.env.IP || '127.0.0.1';
 var server_port = process.env.PORT || 5000;
 
 app.set('port', server_port);
-app.set('ipaddress', server_ip_address);
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -47,18 +45,22 @@ app.post('/games/:id/removeall', routes.removeAll);
 app.delete('/games/:id', routes.delete);
 
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
-io.sockets.on('connection', function(socket){
-	console.log('connected to socket');
-    socket.emit('news', { hello: 'world' });
-        socket.on('my other event', function (data) {
-            console.log(data);
-        });
-        console.log('some more code here');
-});
+// var io = require('socket.io').listen(server);
+// io.sockets.on('connection', function(socket){
+// 	console.log('connected to socket');
+//     socket.emit('news', { hello: 'world' });
+//         socket.on('my other event', function (data) {
+//             console.log(data);
+//         });
+//         console.log('some more code here');
+// });
+
+// io.sockets.on('client-data', function(socket){
+//     console.log('received client data');
+// });
 
 
-server.listen(app.get('port'), app.get('ipaddress'), function(){
-    console.log('Express server listening at ' + app.get('ipaddress') + ' on port ' + app.get('port'));
+server.listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
 });
 
