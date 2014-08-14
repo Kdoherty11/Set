@@ -51,44 +51,59 @@ server.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
 });
 
-var networkInterfaces=os.networkInterfaces();
+var WebSocketServer = require('ws').Server;
 
-var port = 8081;
-var count = 1;
+wss = new WebSocketServer({
+	server: server,
+	autoAcceptConnections:false
+});
+wss.on('connection', function(ws) {
+  console.log("New connection");
+  ws.on('message', function(message) {
+    ws.send("Received: " + message);
+  });
+  ws.send('Welcome!');
+});
 
-function callback_server_connection(socket){
-    var remoteAddress = socket.remoteAddress;
-    var remotePort = socket.remotePort;
-    socket.setNoDelay(true);
-    console.log("connected: ", remoteAddress, " : ", remotePort);
+console.log("Listening to " + server_ip_address + ":" + server_port + "...");
+// var networkInterfaces=os.networkInterfaces();
+
+// var port = 8081;
+// var count = 1;
+
+// function callback_server_connection(socket){
+//     var remoteAddress = socket.remoteAddress;
+//     var remotePort = socket.remotePort;
+//     socket.setNoDelay(true);
+//     console.log("connected: ", remoteAddress, " : ", remotePort);
     
-    var msg = 'Hello ' + remoteAddress + ' : ' +  remotePort + '\r\n'
-        + "You are #" + count + '\r\n';
-    count++;
+//     var msg = 'Hello ' + remoteAddress + ' : ' +  remotePort + '\r\n'
+//         + "You are #" + count + '\r\n';
+//     count++;
 
-    socket.end(msg);
+//     socket.end(msg);
     
-    socket.on('data', function (data) {
-        console.log(data.toString());
-    });
+//     socket.on('data', function (data) {
+//         console.log(data.toString());
+//     });
     
-    socket.on('end', function () {
-        console.log("ended: ", remoteAddress, " : ", remotePort);
-    });
-}
+//     socket.on('end', function () {
+//         console.log("ended: ", remoteAddress, " : ", remotePort);
+//     });
+// }
 
-console.log("node.js net server is waiting:");
-for (var interface in networkInterfaces) {
+// console.log("node.js net server is waiting:");
+// for (var interface in networkInterfaces) {
 
-    networkInterfaces[interface].forEach(function(details){
+//     networkInterfaces[interface].forEach(function(details){
         
-        if ((details.family=='IPv4') && !details.internal) {
-            console.log(interface, details.address);  
-        }
-    });
-}
+//         if ((details.family=='IPv4') && !details.internal) {
+//             console.log(interface, details.address);  
+//         }
+//     });
+// }
 
-console.log("port: ", port);
+// console.log("port: ", port);
 
-var netServer = net.createServer(callback_server_connection);
-netServer.listen(port);
+// var netServer = net.createServer(callback_server_connection);
+// netServer.listen(port);
