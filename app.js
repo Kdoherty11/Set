@@ -1,3 +1,5 @@
+// ******************************************
+
 var express = require('express')
 , routes = require('./routes')
 , http = require('http')
@@ -7,7 +9,11 @@ var express = require('express')
 
 var app = express();
 
-app.set('port', process.env.PORT || 3000);
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+
+app.set('port', server_port);
+app.set('ipaddress', server_ip_address);
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -17,12 +23,10 @@ app.use(function (req, res, next) {
 	res.set('X-Powered-By', 'Set Game Server');
 	next();
 });
-//app.use(app.router);
+app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-// development only
+//development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
@@ -42,68 +46,18 @@ app.post('/games/:id/removeall', routes.removeAll);
 
 app.delete('/games/:id', routes.delete);
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
-
 var server = http.createServer(app);
- 
-server.listen(server_port, server_ip_address, function () {
-  console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', function(socket){
+	console.log('connected to socket');
+    socket.emit('news', { hello: 'world' });
+        socket.on('my other event', function (data) {
+            console.log(data);
+        });
+        console.log('some more code here');
 });
 
-var WebSocketServer = require('ws').Server;
 
-wss = new WebSocketServer({
-	server: server,
-	autoAcceptConnections:false
+server.listen(app.get('port'), app.get('ipaddress'), function(){
+    console.log('Express server listening at ' + app.get('ipaddress') + ' on port ' + app.get('port'));
 });
-wss.on('connection', function(ws) {
-  console.log("New connection");
-  ws.on('message', function(message) {
-    ws.send("Received: " + message);
-  });
-  ws.send('Welcome!');
-});
-
-console.log("Listening to " + server_ip_address + ":" + server_port + "...");
-// var networkInterfaces=os.networkInterfaces();
-
-// var port = 8081;
-// var count = 1;
-
-// function callback_server_connection(socket){
-//     var remoteAddress = socket.remoteAddress;
-//     var remotePort = socket.remotePort;
-//     socket.setNoDelay(true);
-//     console.log("connected: ", remoteAddress, " : ", remotePort);
-    
-//     var msg = 'Hello ' + remoteAddress + ' : ' +  remotePort + '\r\n'
-//         + "You are #" + count + '\r\n';
-//     count++;
-
-//     socket.end(msg);
-    
-//     socket.on('data', function (data) {
-//         console.log(data.toString());
-//     });
-    
-//     socket.on('end', function () {
-//         console.log("ended: ", remoteAddress, " : ", remotePort);
-//     });
-// }
-
-// console.log("node.js net server is waiting:");
-// for (var interface in networkInterfaces) {
-
-//     networkInterfaces[interface].forEach(function(details){
-        
-//         if ((details.family=='IPv4') && !details.internal) {
-//             console.log(interface, details.address);  
-//         }
-//     });
-// }
-
-// console.log("port: ", port);
-
-// var netServer = net.createServer(callback_server_connection);
-// netServer.listen(port);
