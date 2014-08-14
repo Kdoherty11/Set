@@ -1,9 +1,17 @@
 var express = require('express')
   , app = express()
   , routes = require('./routes')
-  , server = require('http').Server(app)
-  , io = require('socket.io')(server)
+  , server = require('http').createServer(app).listen(8000)
+  , io = require('socket.io').listen(server)
   , path = require('path');
+
+io.sockets.on('connection', function(client){
+	console.log('SOCKETS!');
+    client.on('message', function(err, msg){
+        client.broadcast.emit('message', msg);
+        console.log('SOCKETS!');
+    });
+ });
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -44,91 +52,3 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 server.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
 });
-
-io.on('connection', function(){ console.log('Connection made to socket!') });
-
-
-
-// var clients = {};
- 
-// var socketsOfClients = {};
-
-// io.sockets.on('connection', function(socket) {
-// 	console.log('Connected to socket!!!');
-//   socket.on('set username', function(userName) {
-
-//     // Is this an existing user name?
-//     if (clients[userName] === undefined) {
-//       // Does not exist ... so, proceed
-//       clients[userName] = socket.id;
-//       socketsOfClients[socket.id] = userName;
-//       userNameAvailable(socket.id, userName);
-//       userJoined(userName);
-//     } else
-//     if (clients[userName] === socket.id) {
-//       // Ignore for now
-//     } else {
-//       userNameAlreadyInUse(socket.id, userName);
-//     }
-//   });
-//   socket.on('message', function(msg) {
-//   	console.log('Message received on socket!');
-//     var srcUser;
-//     if (msg.inferSrcUser) {
-//       // Infer user name based on the socket id
-//       srcUser = socketsOfClients[socket.id];
-//     } else {
-//       srcUser = msg.source;
-//     }
- 
-//     if (msg.target == "All") {
-//       // broadcast
-//       io.sockets.emit('message',
-//           {"source": srcUser,
-//            "message": msg.message,
-//            "target": msg.target});
-//     } else {
-//       // Look up the socket id
-//       io.sockets.sockets[clients[msg.target]].emit('message',
-//           {"source": srcUser,
-//            "message": msg.message,
-//            "target": msg.target});
-//     }
-//   });
-//   socket.on('disconnect', function() {
-//   	console.log('Disconnecting from socket!');
-//     var uName = socketsOfClients[socket.id];
-//     delete socketsOfClients[socket.id];
-//     delete clients[uName];
- 
-//     // relay this message to all the clients
- 
-//     userLeft(uName);
-//   })
-// });
- 
-// function userJoined(uName) {
-//     Object.keys(socketsOfClients).forEach(function(sId) {
-//       io.sockets.sockets[sId].emit('userJoined', { "userName": uName });
-//     })
-// };
- 
-// function userLeft(uName) {
-//     io.sockets.emit('userLeft', { "userName": uName });
-// };
- 
-// function userNameAvailable(sId, uName) {
-//   setTimeout(function() {
- 
-//     console.log('Sending welcome msg to ' + uName + ' at ' + sId);
-//     io.sockets.sockets[sId].emit('welcome', { "userName" : uName, "currentUsers": JSON.stringify(Object.keys(clients)) });
- 
-//   }, 500);
-// };
- 
-// function userNameAlreadyInUse(sId, uName) {
-//   setTimeout(function() {
-//     io.sockets.sockets[sId].emit('error', { "userNameInUse" : true });
-//   }, 500);
-// };
-
