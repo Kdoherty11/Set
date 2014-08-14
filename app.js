@@ -1,17 +1,11 @@
 var express = require('express')
-  , app = express()
-  , routes = require('./routes')
-  , server = require('http').createServer(app).listen(8080)
-  , io = require('socket.io').listen(server)
-  , path = require('path');
+, routes = require('./routes')
+, http = require('http')
+, path = require('path');
 
-io.sockets.on('connection', function(client){
-	console.log('SOCKETS!');
-    client.on('message', function(err, msg){
-        client.broadcast.emit('message', msg);
-        console.log('SOCKETS!');
-    });
- });
+var app = express();
+
+app.set('port', process.env.PORT || 3000);
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -46,8 +40,10 @@ app.post('/games/:id/removeall', routes.removeAll);
 
 app.delete('/games/:id', routes.delete);
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
+var server = http.createServer(app);
  
 server.listen(server_port, server_ip_address, function () {
   console.log( "Listening on " + server_ip_address + ", server_port " + server_port )
