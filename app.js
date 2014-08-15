@@ -1,11 +1,7 @@
-// ******************************************
-
 var express = require('express')
 , routes = require('./routes')
 , http = require('http')
-, path = require('path')
-, os = require('os')
-, net = require('net');
+, path = require('path');
 
 var app = express();
 
@@ -39,26 +35,25 @@ app.post('/games/:id/addplayer', routes.addPlayer);
 app.post('/games/:id/deal', routes.deal);
 app.post('/games/:id/receiveset', routes.handleSet);
 app.post('/games/:id/incrementscore', routes.incrementScore);
-app.post('/games/:id/remove', routes.remove);
-app.post('/games/:id/removeall', routes.removeAll);
 
 app.delete('/games/:id', routes.delete);
 
 var server = http.createServer(app);
-// var io = require('socket.io').listen(server);
-// io.sockets.on('connection', function(socket){
-// 	console.log('connected to socket');
-//     socket.emit('news', { hello: 'world' });
-//         socket.on('my other event', function (data) {
-//             console.log(data);
-//         });
-//         console.log('some more code here');
-// });
 
-// io.sockets.on('client-data', function(socket){
-//     console.log('received client data');
-// });
-
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', function(socket) {
+	console.log('connected to socket');
+    socket.emit('news', { hello: 'world' });
+    // have update take in gameId as data
+    // and return the game corresponding to the id
+    // instead of making them send a post for it
+    socket.on('update', function (data) {
+        socket.emit('update');
+        console.log('***** update *******');
+        console.log(data);
+    });
+        console.log('some more code here');
+});
 
 server.listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));

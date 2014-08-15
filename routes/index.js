@@ -29,8 +29,7 @@ exports.cards = function(req, res) {
 
 exports.addPlayer = function(req, res) {
 	var playerName = req.body.name;
-	var playerRegId = req.body.regId;
-	var player = new Player(playerName, playerRegId);
+	var player = new Player(playerName);
 	var id = req.param('id');
 	var game = games.getGame(id);
 	if (game.players.length < 4) {
@@ -55,7 +54,6 @@ exports.handleSet = function(req, res) {
 		var game = games.getGame(id);
 		game.removeAll(req.body);
 		game.deal(numCards);
-		//game.broadcastSendToSync();
 		res.json('Set!');
 	} else {
 		res.json('Not a set!');
@@ -71,24 +69,6 @@ exports.incrementScore = function(req, res) {
 
 	player.incrementScore();
 
-	res.json('OK');
-};
-
-exports.remove = function(req, res) {
-	console.log('In remove route');
-	var id =req.param('id');
-	var game = games.getGame(id);
-	console.log('Attempting to remove ' + JSON.stringify(req.body));
-	game.remove(req.body);
-	res.json('OK');
-};
-
-exports.removeAll = function(req, res) {
-	console.log('In removeAll route');
-	var id =req.param('id');
-	var game = games.getGame(id);
-	console.log('Attempting to remove ' + JSON.stringify(req.body));
-	game.removeAll(req.body);
 	res.json('OK');
 };
 

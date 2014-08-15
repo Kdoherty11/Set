@@ -1,7 +1,6 @@
-var Player = function(name, regId) {
+var Player = function(name) {
 	this.numSets = 0;
 	this.name = name;
-	this.regId = regId;
 
 	this.incrementScore = function() {
 		this.numSets++;
