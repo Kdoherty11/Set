@@ -2,8 +2,7 @@ var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
 	Set = require('../model/set'),
-	SetSolver = require('../model/setSolver'),
-	gcm = require('node-gcm');
+	SetSolver = require('../model/setSolver');
 
 var games = new Games();
 
