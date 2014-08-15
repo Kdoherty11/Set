@@ -44,15 +44,14 @@ var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket) {
 	console.log('connected to socket');
     socket.emit('news', { hello: 'world' });
-    // have update take in gameId as data
+    // have update take in gameId as    data
     // and return the game corresponding to the id
     // instead of making them send a post for it
     socket.on('update', function (data) {
-        socket.emit('update');
-        console.log('***** update *******');
-        console.log(data);
+        io.sockets.emit('update');
+        console.log('***** recieved request for update *******');
+        console.log('data ' + data);
     });
-        console.log('some more code here');
 });
 
 server.listen(app.get('port'), function(){
