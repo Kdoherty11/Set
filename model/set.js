@@ -53,7 +53,6 @@ var Set = function(a, b, c) {
 	};
 
 	this.isSet = function() {
-		console.log('in is set');
 		return (this.sameColors() || this.diffColors())
 				&& (this.sameShapes() || this.diffShapes())
 				&& (this.sameNumbers() || this.diffNumbers())
