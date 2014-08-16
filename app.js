@@ -35,6 +35,7 @@ app.post('/games/:id/addplayer', routes.addPlayer);
 app.post('/games/:id/deal', routes.deal);
 app.post('/games/:id/receiveset', routes.handleSet);
 app.post('/games/:id/incrementscore', routes.incrementScore);
+app.post('/games/:id/removeplayer', routes.removePlayer);
 
 app.delete('/games/:id', routes.delete);
 
@@ -43,7 +44,6 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 io.sockets.on('connection', function(socket) {
 	console.log('connected to socket');
-    socket.emit('news', { hello: 'world' });
     // have update take in gameId as    data
     // and return the game corresponding to the id
     // instead of making them send a post for it
@@ -51,6 +51,9 @@ io.sockets.on('connection', function(socket) {
         io.sockets.emit('update');
         console.log('***** recieved request for update *******');
         console.log('data ' + data);
+    });
+    socket.on('disconnect', function(data) {
+        console.log('Disconnected from socket!');
     });
 });
 
