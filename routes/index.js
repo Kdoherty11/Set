@@ -27,8 +27,8 @@ exports.cards = function(req, res) {
 };
 
 exports.addPlayer = function(req, res) {
-	var playerName = req.body.name;
-	var player = new Player(playerName);
+	var name = req.body.name;
+	var player = new Player(name);
 	var id = req.param('id');
 	var game = games.getGame(id);
 	if (game.players.length < 4) {
@@ -51,7 +51,7 @@ exports.handleSet = function(req, res) {
 	if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
 		var id = req.param('id');
 		var game = games.getGame(id);
-		game.removeAll(req.body);
+		game.removeCards(req.body);
 		game.deal(numCards);
 		res.json('Set!');
 	} else {
@@ -63,8 +63,8 @@ exports.incrementScore = function(req, res) {
 	var id = req.param('id');
 	var game = games.getGame(id);
 
-	var playerName = req.body.playerName;
-	var player = game.getPlayerByName(playerName);
+	var name = req.body.name;
+	var player = game.getPlayerByName(name);
 
 	player.incrementScore();
 
@@ -87,5 +87,13 @@ exports.findSet = function(req, res) {
 	} else {
 		res.json(set);
 	}
+};
+
+exports.removePlayer = function(req, res) {
+	var id = req.param('id');
+	var game = games.getGame(id);
+	var name = req.body.name;
+	game.removePlayer(name);
+	res.json('OK');
 };
 
