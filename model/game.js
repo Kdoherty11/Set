@@ -25,7 +25,18 @@ var Game = function(id) {
 		this.players.push(player);
 	};
 
-	this.remove = function(card) {
+	this.removePlayer = function(name) {
+		var playersLen = this.players.length;
+		for (var i = 0; i < playersLen; i++) {
+			if (this.players[i].name === name) {
+				this.players.splice(i, 1);
+				return;
+			}
+		}
+		throw new Error('Could not remove player ' + name);
+	};
+
+	this.removeCard = function(card) {
 		var activeLen = this.activeCards.length;
 		for (var i = 0; i < activeLen; i++) {
 			if (this.activeCards[i].equals(card)) {
@@ -37,10 +48,10 @@ var Game = function(id) {
 	};
 
 	// Removes all cards in the input argument from the active cards
-	this.removeAll = function(cards) {
+	this.removeCards = function(cards) {
 		var cardsLen = cards.length;
 		for (var i = 0; i < cardsLen; i++) {
-			this.remove(cards[i]);
+			this.removeCard(cards[i]);
 		}
 	};
 
