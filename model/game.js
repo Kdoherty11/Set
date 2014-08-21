@@ -65,7 +65,7 @@ var Game = function(id) {
 				return this.players[i];
 			}
 		}
-		throw null;
+		return null;
 	};
 
 	this.handleSet = function(cards) {
