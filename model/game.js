@@ -23,7 +23,11 @@ var Game = function(id) {
 	};
 
 	this.addPlayer = function(player) {
-		this.players.push(player);
+		if (this.getPlayerByName(player.name) === null) {
+			this.players.push(player);
+		} else {
+			console.log('Trying to re-add a player...');
+		}
 	};
 
 	this.removePlayer = function(name) {
@@ -61,7 +65,7 @@ var Game = function(id) {
 				return this.players[i];
 			}
 		}
-		throw new Error('Could not find player with name ' + name);
+		throw null;
 	};
 
 	this.handleSet = function(cards) {
