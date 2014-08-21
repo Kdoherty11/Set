@@ -1,5 +1,6 @@
 var Deck = require('./deck'),
-	SetSolver = require('./setSolver');
+	SetSolver = require('./setSolver'),
+	Set = require('./set');
 
 var NUM_START_CARDS = 12;
 
