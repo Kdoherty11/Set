@@ -64,12 +64,37 @@ var Game = function(id) {
 		}
 		throw new Error('Could not find player with name ' + name);
 	};
+
+	this.handleSet = function(cards) {
+		var numCards = cards.length;
+		if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
+			this.removeCards(cards);
+			if (this.activeCards.length === 9) {
+				this.deal(3);
+			}
+			while (this.findSet() === null) {
+    			this.deal(3);
+			}	
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	this.findSet = function() {
+		var solver = new SetSolver();
+		return solver.findSet(this.activeCards);
+	};
 }
 
 module.exports = function (id) {
 	var instance = new Game(id);
 
 	instance.deal(NUM_START_CARDS);
+
+	while (instance.findSet() === null) {
+        instance.deal(3);
+    }
 
 	return instance;
 };

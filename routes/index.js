@@ -1,8 +1,8 @@
 var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
-	Set = require('../model/set'),
-	SetSolver = require('../model/setSolver');
+	Set = require('../model/set');
+	//User = require('../schemas/user-model');
 
 var games = new Games();
 
@@ -47,16 +47,14 @@ exports.deal = function(req, res) {
 };
 
 exports.handleSet = function(req, res) {
-	var numCards = req.body.length;
-	if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
 		var id = req.param('id');
 		var game = games.getGame(id);
-		game.removeCards(req.body);
-		game.deal(numCards);
-		res.json('Set!');
-	} else {
-		res.json('Not a set!');
-	}
+		var isSet = game.handleSet(req.body);
+		if (isSet) {
+			res.json("Set!");
+		} else {
+			res.json("Not a set!");
+		}
 };
 
 exports.incrementScore = function(req, res) {
@@ -80,8 +78,7 @@ exports.delete = function(req, res) {
 exports.findSet = function(req, res) {
 	var id = req.param('id');
 	var game = games.getGame(id);
-	var setSolver = new SetSolver();
-	var set = setSolver.findSet(game.activeCards);
+	var set = game.findSet();
 	if (set === null) {
 		res.json('There are no sets!');
 	} else {
@@ -96,4 +93,15 @@ exports.removePlayer = function(req, res) {
 	game.removePlayer(name);
 	res.json('OK');
 };
+
+// exports.addUser = function(req, res) {
+// 	var username = req.body.username;
+// 	var password = req.body.password;
+// 	var user = new User(username, password);
+// 	user.save(function(err) {
+// 		if (err) {
+// 			throw err;
+// 		}
+// 	});
+//}
 
