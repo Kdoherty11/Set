@@ -66,7 +66,7 @@ var Game = function(id) {
 
 	this.handleSet = function(cards) {
 		var numCards = cards.length;
-		if (numCards === 3 && new Set(req.body[0], req.body[1], req.body[2]).isSet()) {
+		if (numCards === 3 && new Set(cards[0], cards[1], cards[2]).isSet()) {
 			this.removeCards(cards);
 			if (this.activeCards.length === 9) {
 				this.deal(3);
