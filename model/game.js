@@ -30,10 +30,8 @@ var Game = function(id) {
 		for (var i = 0; i < playersLen; i++) {
 			if (this.players[i].name === name) {
 				this.players.splice(i, 1);
-				return;
 			}
 		}
-		throw new Error('Could not remove player ' + name);
 	};
 
 	this.removeCard = function(card) {
