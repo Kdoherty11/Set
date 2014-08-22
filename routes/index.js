@@ -86,11 +86,17 @@ exports.findSet = function(req, res) {
 	}
 };
 
+// Removes a player from the game and then deletes the game
+// if there are no players left in the game
 exports.removePlayer = function(req, res) {
 	var id = req.param('id');
 	var game = games.getGame(id);
 	var name = req.body.name;
-	game.removePlayer(name);
+	if (game.players.length === 1) {
+		games.deleteGame(id);
+	} else {
+		game.removePlayer(name);
+	}
 	res.json('OK');
 };
 
