@@ -75,8 +75,10 @@ var Game = function(id) {
 			if (this.activeCards.length === 9) {
 				this.deal(3);
 			}
-			while (this.findSet() === null) {
-    			this.deal(3);
+			if (!this.isOver()) {
+				while (this.findSet() === null) {
+    				this.deal(3);
+				}
 			}	
 			return true;
 		} else {
