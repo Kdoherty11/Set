@@ -6,10 +6,10 @@ var NUM_START_CARDS = 12;
 
 var Game = function(id) {
 
+	this.id = id;
 	this.players = [];
 	this.activeCards = [];
 	this.deck = new Deck();
-	this.id = id;
 
 	this.deal = function(num) {
 		var dealt = this.deck.deal(num);
@@ -68,9 +68,30 @@ var Game = function(id) {
 		return null;
 	};
 
+	this.containsCard = function(card) {
+		var activeLen = this.activeCards.length;
+		for (var i = 0; i < activeLen; i++) {
+			if (this.activeCards[i].equals(card)) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	this.containsAllCards = function(cards) {
+		var cardsLen = cards.length;
+		for (var i = 0; i < cardsLen; i++) {
+			if (!this.containsCard(cards[i])) {
+				return false;
+			}
+		}
+		return true;
+	};
+
 	this.handleSet = function(cards) {
 		var numCards = cards.length;
-		if (numCards === 3 && new Set(cards[0], cards[1], cards[2]).isSet()) {
+		if (numCards === 3 && this.containsAllCards(cards) &&
+	      new Set(cards[0], cards[1], cards[2]).isSet()) {
 			this.removeCards(cards);
 			if (this.activeCards.length === 9) {
 				this.deal(3);
