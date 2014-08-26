@@ -2,7 +2,6 @@ var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
 	Set = require('../model/set');
-	//User = require('../schemas/user-model');
 
 var games = new Games();
 
@@ -49,12 +48,8 @@ exports.deal = function(req, res) {
 exports.handleSet = function(req, res) {
 		var id = req.param('id');
 		var game = games.getGame(id);
-		var isSet = game.handleSet(req.body);
-		if (isSet) {
-			res.json("Set!");
-		} else {
-			res.json("Not a set!");
-		}
+		var resp = game.handleSet(req.body);
+		res.json(resp);
 };
 
 exports.incrementScore = function(req, res) {
@@ -99,15 +94,4 @@ exports.removePlayer = function(req, res) {
 	}
 	res.json('OK');
 };
-
-// exports.addUser = function(req, res) {
-// 	var username = req.body.username;
-// 	var password = req.body.password;
-// 	var user = new User(username, password);
-// 	user.save(function(err) {
-// 		if (err) {
-// 			throw err;
-// 		}
-// 	});
-//}
 

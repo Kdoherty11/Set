@@ -90,8 +90,8 @@ var Game = function(id) {
 
 	this.handleSet = function(cards) {
 		var numCards = cards.length;
-		if (numCards === 3 && this.containsAllCards(cards) &&
-	      new Set(cards[0], cards[1], cards[2]).isSet()) {
+		if (numCards === 3 && new Set(cards[0], cards[1], cards[2]).isSet()) {
+			if (this.containsAllCards(cards)) {
 			this.removeCards(cards);
 			if (this.activeCards.length === 9) {
 				this.deal(3);
@@ -101,9 +101,12 @@ var Game = function(id) {
     				this.deal(3);
 				}
 			}	
-			return true;
+			return "Set!";
 		} else {
-			return false;
+			return "Too late!";
+		}
+	} else {
+			return "Not a Set!";
 		}
 	};
 
