@@ -1,9 +1,12 @@
 var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
-	Set = require('../model/set');
+	Set = require('../model/set'),
+	Leaderboards = require('../leaderboard/leaderboards');
 
 var games = new Games();
+var pracLeaderboards = new Leaderboards([1, 3, 5, 10, 15]);
+var raceLeaderboards = new Leaderboards([1, 3, 5, 10, 15, 'Deck']);
 
 exports.addGame = function(req, res) {
 	var id = games.addGame();
@@ -92,6 +95,36 @@ exports.removePlayer = function(req, res) {
 	} else {
 		game.removePlayer(name);
 	}
+	res.json('OK');
+};
+
+exports.getPracticeLeaderboard = function(req, res) {
+	var key = req.param('key');
+	var leaderboard = pracLeaderboards.get(key);
+	res.json(leaderboard);
+};
+
+exports.getRaceLeaderboard = function(req, res) {
+	var key = req.param('key');
+	var leaderboard = raceLeaderboards.get(key);
+	res.json(leaderboard);
+};
+
+exports.addPracticeEntry = function(req, res) {
+	var key = req.param('key');
+	var leaderboard = pracLeaderboards.get(key);
+	var name = req.body.name;
+	var score = req.body.score;
+	leaderboard.addEntryDescending(name, score);
+	res.json('OK');
+};
+
+exports.addRaceEntry = function(req, res) {
+	var key = req.param('key');
+	var leaderboard = raceLeaderboards.get(key);
+	var name = req.body.name;
+	var score = req.body.score;
+	leaderboard.addEntryAscending(name, score);
 	res.json('OK');
 };
 
