@@ -14,6 +14,5 @@ var Card = function(shape, num, color, fill) {
 	};
 }
 
-
 module.exports = Card;
 
