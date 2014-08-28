@@ -37,6 +37,12 @@ app.post('/games/:id/receiveset', routes.handleSet);
 app.post('/games/:id/incrementscore', routes.incrementScore);
 app.post('/games/:id/removeplayer', routes.removePlayer);
 
+app.get('/leaderboards/practice/:key', routes.getPracticeLeaderboard);
+app.post('/leaderboards/practice/:key', routes.addPracticeEntry);
+
+app.get('/leaderboards/race/:key', routes.getRaceLeaderboard);
+app.post('/leaderboards/race/:key', routes.addRaceEntry);
+
 app.delete('/games/:id', routes.delete);
 
 var server = http.createServer(app);
