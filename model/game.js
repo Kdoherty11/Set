@@ -92,20 +92,20 @@ var Game = function(id) {
 		var numCards = cards.length;
 		if (numCards === 3 && new Set(cards[0], cards[1], cards[2]).isSet()) {
 			if (this.containsAllCards(cards)) {
-			this.removeCards(cards);
-			if (this.activeCards.length === 9) {
-				this.deal(3);
-			}
-			if (!this.isOver()) {
-				while (this.findSet() === null) {
-    				this.deal(3);
+				this.removeCards(cards);
+				if (this.activeCards.length === 9) {
+					this.deal(3);
 				}
-			}	
-			return "Set!";
+				if (!this.isOver()) {
+					while (this.findSet() === null) {
+	    				this.deal(3);
+					}
+				}	
+				return "Set!";
+			} else {
+				return "Too late!";
+			}
 		} else {
-			return "Too late!";
-		}
-	} else {
 			return "Not a Set!";
 		}
 	};
