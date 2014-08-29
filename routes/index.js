@@ -2,11 +2,9 @@ var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
 	Set = require('../model/set'),
-	Leaderboards = require('../leaderboard/leaderboards');
+	leaderboardModel = require('../schemas/leaderboard-model');
 
 var games = new Games();
-var pracLeaderboards = new Leaderboards([1, 3, 5, 10, 15]);
-var raceLeaderboards = new Leaderboards([1, 3, 5, 10, 15, 'Deck']);
 
 exports.addGame = function(req, res) {
 	var id = games.addGame();
@@ -100,31 +98,36 @@ exports.removePlayer = function(req, res) {
 
 exports.getPracticeLeaderboard = function(req, res) {
 	var key = req.param('key');
-	var leaderboard = pracLeaderboards.get(key);
-	res.json(leaderboard);
-};
-
-exports.getRaceLeaderboard = function(req, res) {
-	var key = req.param('key');
-	var leaderboard = raceLeaderboards.get(key);
-	res.json(leaderboard);
+	leaderboardModel.find({'mode': 'practice', 'key': key}).sort({score: 'descending'}).exec(function (err, docs) {
+       		 res.json(docs);
+    });
 };
 
 exports.addPracticeEntry = function(req, res) {
 	var key = req.param('key');
-	var leaderboard = pracLeaderboards.get(key);
-	var name = req.body.name;
-	var score = req.body.score;
-	leaderboard.addEntryDescending(name, score);
+	var playerName = req.body.name;
+	var playerScore = req.body.score;
+	leaderboardModel.insertEntry(playerName, playerScore, 'practice', key, function(a, b) {
+		return a < b;
+	});
 	res.json('OK');
 };
 
+exports.getRaceLeaderboard = function(req, res) {
+	var key = req.param('key');
+	leaderboardModel.find({'mode': 'race', 'key': key}).sort({score: 'ascending'}).exec(function (err, docs) {
+       		 res.json(docs);
+    });
+}
+
 exports.addRaceEntry = function(req, res) {
 	var key = req.param('key');
-	var leaderboard = raceLeaderboards.get(key);
-	var name = req.body.name;
-	var score = req.body.score;
-	leaderboard.addEntryAscending(name, score);
+	var playerName = req.body.name;
+	var playerScore = req.body.score;
+	leaderboardModel.insertEntry(playerName, playerScore, 'race', key, function(a, b) {
+		return a > b;
+	});
 	res.json('OK');
 };
+
 

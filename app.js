@@ -1,7 +1,14 @@
 var express = require('express')
 , routes = require('./routes')
 , http = require('http')
-, path = require('path');
+, path = require('path')
+, mongoose = require('mongoose')
+, leaderboardModel = require('./schemas/leaderboard-model');
+
+mongoose.connect('mongodb://admin:mydbpass123@ds063809.mongolab.com:63809/set');
+leaderboardModel.collection.dropAllIndexes(function(err, res) {
+   if(err) console.log(err);
+});
 
 var app = express();
 
