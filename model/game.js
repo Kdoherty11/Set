@@ -1,6 +1,6 @@
 var Deck = require('./deck'),
 	Set = require('./set'),
-	setSolver = require('./setSolver');
+	SetSolver = require('./setSolver');
 
 var NUM_START_CARDS = 12;
 
@@ -111,6 +111,7 @@ var Game = function(id) {
 	};
 
 	this.findSet = function() {
+		var setSolver = new SetSolver();
 		return setSolver.findSet(this.activeCards);
 	};
 }
