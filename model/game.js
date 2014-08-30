@@ -10,6 +10,7 @@ var Game = function(id) {
 	this.players = [];
 	this.activeCards = [];
 	this.deck = new Deck();
+	this.isStarted = false;
 
 	this.deal = function(num) {
 		var dealt = this.deck.deal(num);
@@ -25,8 +26,6 @@ var Game = function(id) {
 	this.addPlayer = function(player) {
 		if (this.getPlayerByName(player.name) === null) {
 			this.players.push(player);
-		} else {
-			console.log('Trying to re-add a player...');
 		}
 	};
 
@@ -90,6 +89,7 @@ var Game = function(id) {
 
 	this.handleSet = function(cards) {
 		var numCards = cards.length;
+		this.isStarted = true;
 		if (numCards === 3 && new Set(cards[0], cards[1], cards[2]).isSet()) {
 			if (this.containsAllCards(cards)) {
 				this.removeCards(cards);
@@ -114,7 +114,7 @@ var Game = function(id) {
 		var setSolver = new SetSolver();
 		return setSolver.findSet(this.activeCards);
 	};
-}
+};
 
 module.exports = function (id) {
 	var instance = new Game(id);
