@@ -2,7 +2,8 @@ var Game = require('../model/game'),
 	Player = require('../model/player'),
 	Games = require('../model/games'),
 	Set = require('../model/set'),
-	leaderboardModel = require('../schemas/leaderboard-model');
+	leaderboardModel = require('../schemas/leaderboard-model'),
+	User = require('../schemas/user-model');
 
 var games = new Games();
 
@@ -118,7 +119,7 @@ exports.getRaceLeaderboard = function(req, res) {
 	leaderboardModel.find({'mode': 'race', 'key': key}).sort({score: 'ascending'}).exec(function (err, docs) {
        		 res.json(docs);
     });
-}
+};
 
 exports.addRaceEntry = function(req, res) {
 	var key = req.param('key');
@@ -130,4 +131,19 @@ exports.addRaceEntry = function(req, res) {
 	res.json('OK');
 };
 
+exports.addUser = function(req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
+	User.addUser(username, password, function(result) {
+		res.json(result);
+	});
+};
+
+exports.authenticate = function(req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
+	User.authenticate(username, password, function(result) {
+		res.json(result);
+	});
+};
 

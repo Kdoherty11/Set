@@ -50,6 +50,9 @@ app.post('/leaderboards/practice/:key', routes.addPracticeEntry);
 app.get('/leaderboards/race/:key', routes.getRaceLeaderboard);
 app.post('/leaderboards/race/:key', routes.addRaceEntry);
 
+app.post('/users', routes.addUser);
+app.post('/users/auth', routes.authenticate);
+
 app.delete('/games/:id', routes.delete);
 
 var server = http.createServer(app);
